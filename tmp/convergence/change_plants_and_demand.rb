@@ -45,5 +45,9 @@ end
 # Change demand (add export from 2013 (54 PJ) to the FD + OU + loss)
 demand_file = YAML.load_file("archive-info.yml")
 
-if demand_file[:area] = 'nl':
+if demand_file[:area] == 'nl'
+  puts "Changing demand"
   demand_file[:total_demand] = demand_file[:total_demand] + 54.0e9
+end
+
+File.write("archive-info.yml", YAML.dump(demand_file))
