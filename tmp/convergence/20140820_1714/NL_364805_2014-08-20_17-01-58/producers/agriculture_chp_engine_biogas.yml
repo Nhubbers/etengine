@@ -1,0 +1,10 @@
+---
+:key: :agriculture_chp_engine_biogas
+:marginal_costs: 75.93608283785143
+:output_capacity_per_unit: 1.0
+:number_of_units: 69.41453750000001
+:availability: 0.95
+:fixed_costs_per_unit: 581800.0
+:fixed_om_costs_per_unit: 231800.0
+:full_load_hours: 8000.0
+:type: DispatchableProducer

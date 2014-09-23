@@ -17,7 +17,6 @@ public/javascripts/cache_*.js
 public/stylesheets/*.css
 public/system/*
 public/flowplayer/*
-tmp/*
 public/images/converter_12*
 import/*
 public/assets
