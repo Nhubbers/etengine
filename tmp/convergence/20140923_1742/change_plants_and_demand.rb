@@ -42,5 +42,12 @@ Dir.glob('producers/*.yml') do |filename|
  
 end
 
+# Change demand (add export from 2013 (35.14 PJ) to the FD + OU + loss)
+demand_file = YAML.load_file("archive-info.yml")
 
+if demand_file[:area] == 'nl'
+  puts "Changing demand"
+  demand_file[:total_demand] = demand_file[:total_demand] + 35.14e9
+end
 
+File.write("archive-info.yml", YAML.dump(demand_file))
