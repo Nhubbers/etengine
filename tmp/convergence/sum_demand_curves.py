@@ -10,7 +10,8 @@ x_plots = 1
 y_plots = 1
 
 # load curves
-filepath = "/Users/kruip/Projects/etengine/tmp/convergence/20130923_1502/NL_373837_2014-09-23_15-01-42/demand.csv"
+#filepath = "/Users/kruip/Projects/etengine/tmp/convergence/20130923_1502/NL_373837_2014-09-23_15-01-42/demand.csv" # 2013 default
+filepath = "/Users/kruip/Projects/etengine/tmp/convergence/20140923_1742/NL_373839_2014-09-23_17-33-07/demand.csv" # 2013 CO2=15
 nl2013 = np.genfromtxt(filepath, delimiter = ',')
 
 total = np.sum(nl2013)/1e6
