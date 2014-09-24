@@ -7,5 +7,4 @@
 :fixed_costs_per_unit: 1295000.0
 :fixed_om_costs_per_unit: 525000.0
 :full_load_hours: 6000.0
-:load_profile_key: agriculture_chp
-:type: MustRunProducer
+:type: DispatchableProducer
