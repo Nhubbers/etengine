@@ -1,0 +1,9 @@
+---
+:key: :energy_power_supercritical_coal
+:marginal_costs: 37.731342037749755
+:output_capacity_per_unit: 800.0
+:number_of_units: 15.4
+:availability: 0.89
+:fixed_costs_per_unit: 79981066.66666667
+:fixed_om_costs_per_unit: 19414400.0
+:type: DispatchableProducer

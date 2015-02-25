@@ -1,0 +1,11 @@
+---
+:key: :households_solar_pv_solar_radiation
+:marginal_costs: 0.0
+:output_capacity_per_unit: 0.0015
+:number_of_units: 1911960.3863299424
+:availability: 0.98
+:fixed_costs_per_unit: 148.06471248
+:fixed_om_costs_per_unit: 35.775
+:full_load_hours: 867.0
+:load_profile_key: solar_pv
+:type: VolatileProducer
