@@ -173,6 +173,17 @@ describe Scenario do
     end
   end
 
+  describe 'with a preset Preset' do
+    let(:preset)   { Preset.get(2999) }
+    let(:scenario) { Scenario.new(scenario_id: preset.id) }
+
+    describe '#parent' do
+      it 'should retrieve a copy of the parent' do
+        expect(scenario.parent).to eq(preset.to_scenario)
+      end
+    end
+  end # with a preset Preset
+
   describe 'with a preset scenario' do
     let(:preset) do
       FactoryGirl.create(:scenario, {
@@ -184,6 +195,10 @@ describe Scenario do
 
     let(:scenario) do
       Scenario.new(scenario_id: preset.id)
+    end
+
+    it 'should retrieve the parent' do
+      expect(scenario.parent).to eq(preset)
     end
 
     it 'should copy the user values' do
@@ -207,6 +222,36 @@ describe Scenario do
       expect(scenario.scaler.area_attribute).to eq('number_of_residences')
       expect(scenario.scaler.value).to eq(1000)
       expect(scenario.scaler.scenario).to eq(scenario) # Not `preset`.
+    end
+
+    context 'with no preset flexibility order' do
+      it 'should create no flexibilty order' do
+        expect(scenario.flexibility_order).to be_nil
+      end
+    end
+
+    context 'with a preset flexibility order' do
+      let(:techs) do
+        %w(
+          power_to_heat
+          export
+          power_to_gas
+          power_to_power
+          electric_vehicle
+        )
+      end
+
+      let!(:order) do
+        FlexibilityOrder.create!(scenario: preset, order: techs)
+      end
+
+      it 'copies the flexibility order attributes' do
+        expect(scenario.flexibility_order).to_not be_nil
+        expect(scenario.flexibility_order.id).to_not eq(preset.flexibility_order.id)
+
+        expect(scenario.flexibility_order.order).to eq(techs)
+        expect(scenario.flexibility_order.scenario).to eq(scenario) # Not `preset`.
+      end
     end
   end
 
@@ -251,6 +296,21 @@ describe Scenario do
     it 'adjusts the balanced values to fit the full-size region' do
       expect(scenario.balanced_values).
         to eq({'grouped_input_two' => 8 * multiplier})
+    end
+
+    context 'with a non-existent input' do
+      before do
+        preset.user_values['invalid'] = 5.0
+        preset.save!
+      end
+
+      it 'does not raise an error' do
+        expect { scenario }.to_not raise_error
+      end
+
+      it 'skips the input' do
+        expect(scenario.user_values.keys).to_not include('invalid')
+      end
     end
   end
 

@@ -11,6 +11,8 @@ module Api
       #   Do you want the extra attributes (key, unit, step) to be included in
       #   the output?
       def self.collection(inputs, scenario, extras = false)
+        scenario = IndifferentScenario.from(scenario)
+
         inputs.each_with_object(Hash.new) do |input, data|
           data[input.key] = InputPresenter.new(input, scenario, extras)
         end
@@ -28,7 +30,7 @@ module Api
       #
       def initialize(input, scenario, extra_attributes = false)
         @input            = input
-        @scenario         = scenario
+        @scenario         = IndifferentScenario.from(scenario)
         @extra_attributes = extra_attributes
       end
 
@@ -40,10 +42,10 @@ module Api
       def as_json(*)
         json     = Hash.new
 
-        values   = Input.cache(@scenario).read(@scenario, @input)
+        values   = Input.cache(@scenario.original).read(@scenario.original, @input)
 
-        user_values      = HashWithIndifferentAccess.new(@scenario.user_values)
-        balanced_values  = HashWithIndifferentAccess.new(@scenario.balanced_values)
+        user_values      = @scenario.user_values
+        balanced_values  = @scenario.balanced_values
 
         user_val = user_values[@input.key] || balanced_values[@input.key]
 
@@ -57,6 +59,13 @@ module Api
 
         json[:share_group] = @input.share_group if @input.share_group.present?
 
+        if parent = @scenario.parent
+          json[:default] =
+            parent.user_values[@input.key] ||
+            parent.balanced_values[@input.key] ||
+            json[:default]
+        end
+
         if @extra_attributes
           json[:step] = values[:step] || @input.step_value
           json[:code] = @input.key
@@ -69,6 +78,34 @@ module Api
 
         json
       end
+
+      # A simple wrapper around Scenario which converts user and balanced values
+      # to an indifferent-access hash. Prevents creating new copies of these
+      # hashes for each and every input being presented.
+      class IndifferentScenario
+        attr_reader :original
+
+        def self.from(scenario)
+          scenario.is_a?(self) ? scenario : new(scenario)
+        end
+
+        def initialize(original)
+          @original = original
+        end
+
+        def user_values
+          @user ||= HashWithIndifferentAccess.new(@original.user_values)
+        end
+
+        def balanced_values
+          @balanced ||= HashWithIndifferentAccess.new(@original.balanced_values)
+        end
+
+        def parent
+          @parent ||=
+            @original.parent && IndifferentScenario.from(@original.parent)
+        end
+      end # IndifferentScenario
     end # Input
   end # V3
 end # Api

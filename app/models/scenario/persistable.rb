@@ -51,6 +51,8 @@ module Scenario::Persistable
         other_scaler.attributes.except('id', 'scenario_id'))
     end
 
+    self.flexibility_order = cloned_flexibility_order(preset)
+
     self.end_year  = preset.end_year
     self.area_code = preset.area_code
     self.use_fce   = preset.use_fce
@@ -66,7 +68,12 @@ module Scenario::Persistable
   # Returns a hash.
   def rescale_inputs(collection, source_scaler, dest_scaler)
     collection.each_with_object({}) do |(key, value), data|
-      if ScenarioScaling.scale_input?(Input.get(key.to_sym))
+      input = Input.get(key.to_sym)
+
+      # Old scenarios may use inputs which no longer exist; skip them.
+      next unless input
+
+      if ScenarioScaling.scale_input?(input)
         data[key] = rescale_input(value, source_scaler, dest_scaler)
       else
         data[key] = value
@@ -83,6 +90,16 @@ module Scenario::Persistable
       dest_scaler ? dest_scaler.scale(descaled) : descaled
     else dest_scaler
       dest_scaler.scale(value)
+    end
+  end
+
+  # Internal: If the source preset has a flexibility order, clones it onto the
+  # new scenario.
+  #
+  # Returns a flexibility order or nil.
+  def cloned_flexibility_order(preset)
+    if order = preset.try(:flexibility_order)
+      FlexibilityOrder.new(order.attributes.except('id', 'scenario_id'))
     end
   end
 end

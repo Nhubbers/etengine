@@ -33,7 +33,7 @@ module Etsource
     #   be independent to reduce bugs.
     def graph(country = nil)
       instrument("etsource.loader: graph") do
-        graph = DeepClone.clone optimized_graph 
+        graph = DeepClone.clone optimized_graph
         graph.dataset = dataset(country) if country
         graph
       end
@@ -45,8 +45,11 @@ module Etsource
     end
 
     def area_attributes(area_code)
-      @area_attributes[area_code] ||=
-        Atlas::Dataset.find(area_code).to_hash.with_indifferent_access
+      @area_attributes[area_code] ||= begin
+        area_attr = Atlas::Dataset.find(area_code).to_hash
+        area_attr['last_updated_at'] = @etsource.last_updated_at("datasets/#{area_code}")
+        area_attr.with_indifferent_access
+      end
     end
 
     # @return [Qernel::Dataset] Dataset to be used for a country. Is in a uncalculated state.
@@ -98,11 +101,20 @@ module Etsource
       instrument("etsource.loader: optimized_graph") do
         if @etsource.cache_topology?
           NastyCache.instance.fetch_cached("optimized_graph") do
-            g = unoptimized_graph
-            g.dataset = dataset('nl')
-            g.optimize_calculation_order
-            g.detach_dataset!
-            g
+            graph = unoptimized_graph
+            graph.dataset = dataset('nl')
+
+            merit = graph.area.dataset_get(:use_merit_order_demands)
+
+            begin
+              graph.area.dataset_set(:use_merit_order_demands, false)
+              graph.optimize_calculation_order
+            ensure
+              graph.area.dataset_set(:use_merit_order_demands, merit)
+            end
+
+            graph.detach_dataset!
+            graph
           end
         else
           unoptimized_graph

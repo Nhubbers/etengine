@@ -7,18 +7,18 @@ module Qernel::Plugins
   # back to the graph, and the graph will be recalculated.
   class MeritOrder < SimpleMeritOrder
     # A list of types of merit order producers to be supplied to the M/O.
-    PRODUCER_TYPES = [ :must_run, :volatile, :dispatchable ].freeze
+    PARTICIPANT_TYPES = [:must_run, :volatile, :dispatchable, :flex].freeze
 
     before :first_calculation, :clone_dataset
     after  :first_calculation, :setup
     after  :first_calculation, :run
     before :recalculation,     :inject
 
-    # Public: The SimpleMeritOrder plugin is enabled only on future graphs, and
-    # only when the "full" Merit order has been requested (otherwise
-    # SimpleMeritOrder will be used instead).
+    # Public: The MeritOrder plugin is enabled only on future graphs, and only
+    # when the "full" Merit order has been requested (otherwise SimpleMeritOrder
+    # will be used instead).
     def self.enabled?(graph)
-      graph.future? && graph.dataset_get(:use_merit_order_demands).to_i == 1
+      graph.future? && graph.area.use_merit_order_demands
     end
 
     # Internal: Sets up the Merit::Order. Clones the graph dataset so that we
@@ -63,60 +63,30 @@ module Qernel::Plugins
       @graph.graph_query.total_demand_for_electricity
     end
 
-    # Internal: Given a Merit order participant +type+ and the associated
-    # Converter, +conv+, from the graph, returns a hash of attributes required
-    # to set up the Participant object in the Merit order.
-    #
-    # Adds a couple of additional attributes required to calculate costs and
-    # profitability.
-    #
-    # Returns a hash.
-    def producer_attributes(type, conv)
-      attributes = super
-      marginal_cost = conv.variable_costs_per(:mwh_electricity)
-
-      attributes[:marginal_costs] =
-        (marginal_cost && marginal_cost.nan?) ? Float::INFINITY : marginal_cost
-
-      attributes[:fixed_costs_per_unit] =
-        conv.send(:fixed_costs)
-
-      attributes[:fixed_om_costs_per_unit] =
-        conv.send(:fixed_operation_and_maintenance_costs_per_year)
-
-      attributes
-    end
-
     # Internal: Takes loads and costs from the calculated Merit order, and
     # installs them on the appropriate converters in the graph. The updated
     # values will be used in the recalculated graph.
     #
     # Returns nothing.
     def inject_values!
-      dispatchables = @order.participants
-        .dispatchables.sort_by(&:marginal_costs)
+      each_adapter(&:inject!)
+      set_dispatchable_positions!
+    end
 
-      dispatchables.each_with_index do |dispatchable, position|
-        converter = @graph.converter(dispatchable.key).converter_api
+    # Internal: Sets the position of each dispatchable in the merit order -
+    # according to their marginal cost - so that this may be communicated to
+    # other applications.
+    #
+    # Returns nothing.
+    def set_dispatchable_positions!
+      dispatchables = @order.participants.dispatchables.reject do |participant|
+        # Flexible technologies are classed as dispatchable but should not be
+        # assigned a position.
+        adapter(participant.key).config.type != :dispatchable
+      end
 
-        flh = dispatchable.full_load_hours
-        flh = 0.0 if flh.nan? || flh.nil?
-        fls = flh * 3600
-
-        converter[:full_load_hours]      = flh
-        converter[:full_load_seconds]    = fls
-        converter[:marginal_costs]       = dispatchable.marginal_costs
-        converter[:number_of_units]      = dispatchable.number_of_units
-        converter[:profitability]        = dispatchable.profitability
-        converter[:merit_order_position] = position + 1
-
-        converter[:profit_per_mwh_electricity] =
-          dispatchable.profit_per_mwh_electricity
-
-        converter.demand =
-          fls * converter.input_capacity * dispatchable.number_of_units
-
-        nil
+      dispatchables.each.with_index do |participant, position|
+        adapter(participant.key).converter[:merit_order_position] = position + 1
       end
     end
   end # MeritOrder

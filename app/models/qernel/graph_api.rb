@@ -13,8 +13,6 @@ class GraphApi
 
   attr_reader :graph
 
-  dataset_accessors :enable_merit_order, :use_merit_order_demands
-
   # @param graph [Qernel::Graph]
   def initialize(graph)
     @graph = graph
@@ -26,10 +24,6 @@ class GraphApi
 
   def dataset_key
     :graph
-  end
-
-  def enable_merit_order?
-    enable_merit_order == 1.0
   end
 
   def use_merit_order_demands?
@@ -75,12 +69,18 @@ class GraphApi
     graph.group_converters(:final_demand_group).map(&:converter_api).map(&:input_of_electricity).compact.sum
   end
 
+  # Demand of electricity for all converters which do not belong
+  # to the final_demand_group but nevertheless consume electricity.
+  def non_final_demand_for_electricity
+    graph.group_converters(:non_final_electricity_demand_converters).map(&:converter_api).map(&:input_of_electricity).compact.sum
+  end
+
   # Public: The demand of electricity in the entire graph, including use in the
   # energy sector and losses caused by no exports.
   #
   # Returns a numeric.
   def total_demand_for_electricity
-    final_demand_for_electricity +
+    final_demand_for_electricity + non_final_demand_for_electricity +
     electricity_losses_if_export_is_zero
   end
 

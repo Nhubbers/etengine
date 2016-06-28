@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909150707) do
+ActiveRecord::Schema.define(version: 20160210114327) do
 
   create_table "fce_values", force: true do |t|
     t.string   "using_country"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 20150909150707) do
     t.datetime "updated_at"
     t.string   "carrier"
   end
+
+  create_table "flexibility_orders", force: true do |t|
+    t.integer "scenario_id"
+    t.text    "order"
+  end
+
+  add_index "flexibility_orders", ["scenario_id"], name: "index_flexibility_orders_on_scenario_id", unique: true, using: :btree
 
   create_table "gquery_groups", force: true do |t|
     t.string   "group_key"

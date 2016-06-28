@@ -76,22 +76,22 @@
   :y: 4280
 :transport_car_using_compressed_natural_gas:
   :x: 1520
-  :y: 3640
+  :y: 3580
 :transport_truck_using_compressed_natural_gas:
   :x: 1520
   :y: 3960
 :transport_car_using_lpg:
   :x: 1520
-  :y: 3460
+  :y: 3400
 :transport_car_using_gasoline_mix:
   :x: 1520
-  :y: 3520
+  :y: 3460
 :transport_car_using_diesel_mix:
   :x: 1520
-  :y: 3580
+  :y: 3520
 :transport_car_using_electricity:
   :x: 1520
-  :y: 3700
+  :y: 3640
 :transport_truck_using_gasoline_mix:
   :x: 1520
   :y: 3840
@@ -289,10 +289,10 @@
   :y: 520
 :households_water_heater_crude_oil:
   :x: 1520
-  :y: 1140
+  :y: 1080
 :households_water_heater_coal:
   :x: 1520
-  :y: 1080
+  :y: 1020
 :households_old_houses_heating_savings_from_insulation:
   :x: 320
   :y: 640
@@ -301,7 +301,7 @@
   :y: 580
 :households_water_heater_wood_pellets:
   :x: 1520
-  :y: 1440
+  :y: 1380
 :transport_useful_demand_truck_kms:
   :x: 720
   :y: 3920
@@ -320,12 +320,6 @@
 :transport_useful_demand_trains:
   :x: 720
   :y: 4220
-:transport_useful_demand_ships:
-  :x: 720
-  :y: 4720
-:buildings_cooling_collective_cooling_network_electricity:
-  :x: 1520
-  :y: 6540
 :agriculture_useful_demand_useable_heat:
   :x: 660
   :y: 5340
@@ -407,9 +401,6 @@
 :energy_power_hydro_mountain_pumped:
   :x: 5520
   :y: 2320
-:households_useful_demand_for_hot_water_after_solar_heater_and_add_on:
-  :x: 1100
-  :y: 1380
 :households_cooker_wood_pellets:
   :x: 1520
   :y: 1820
@@ -625,28 +616,28 @@
   :y: 940
 :households_water_heater_heatpump_ground_water_electricity:
   :x: 1520
-  :y: 1560
+  :y: 1500
 :households_water_heater_resistive_electricity:
   :x: 1520
-  :y: 1500
+  :y: 1440
 :households_space_heater_heatpump_air_water_electricity:
   :x: 1520
-  :y: 740
+  :y: 680
 :households_space_heater_electricity:
   :x: 1520
-  :y: 680
+  :y: 620
 :households_space_heater_combined_network_gas:
   :x: 1520
   :y: 440
 :households_space_heater_heatpump_ground_water_electricity:
   :x: 1520
-  :y: 800
+  :y: 740
 :households_water_heater_district_heating_steam_hot_water:
   :x: 1520
-  :y: 1680
+  :y: 1620
 :households_water_heater_combined_network_gas:
   :x: 1520
-  :y: 1260
+  :y: 1200
 :households_final_demand_wood_pellets:
   :x: 3120
   :y: 940
@@ -664,16 +655,13 @@
   :y: 1120
 :households_space_heater_wood_pellets:
   :x: 1520
-  :y: 620
+  :y: 560
 :households_space_heater_coal:
   :x: 1520
   :y: 260
 :households_space_heater_crude_oil:
   :x: 1520
   :y: 320
-:households_space_heater_heatpump_add_on_electricity:
-  :x: 1080
-  :y: 940
 :households_cooling_heatpump_ground_water_electricity:
   :x: 1520
   :y: 120
@@ -682,22 +670,22 @@
   :y: 180
 :households_water_heater_network_gas:
   :x: 1520
-  :y: 1200
+  :y: 1140
 :households_water_heater_micro_chp_network_gas:
   :x: 1520
-  :y: 1320
+  :y: 1260
 :households_space_heater_district_heating_steam_hot_water:
   :x: 1520
-  :y: 860
+  :y: 800
 :households_space_heater_micro_chp_network_gas:
   :x: 1520
-  :y: 560
+  :y: 500
 :households_space_heater_network_gas:
   :x: 1520
   :y: 380
 :households_water_heater_fuel_cell_chp_network_gas:
   :x: 1520
-  :y: 1380
+  :y: 1320
 :energy_power_ultra_supercritical_coal:
   :x: 6240
   :y: 2500
@@ -1004,9 +992,6 @@
 :transport_final_demand_heavy_fuel_oil:
   :x: 3120
   :y: 4160
-:transport_final_demand_network_gas:
-  :x: 3120
-  :y: 4220
 :transport_final_demand_bio_ethanol:
   :x: 3120
   :y: 4280
@@ -1031,9 +1016,6 @@
 :transport_final_demand_for_road_diesel:
   :x: 2320
   :y: 3580
-:transport_final_demand_for_road_network_gas:
-  :x: 2320
-  :y: 3640
 :transport_final_demand_for_road_bio_ethanol:
   :x: 2320
   :y: 3700
@@ -1073,9 +1055,6 @@
 :transport_road_mixer_diesel:
   :x: 1960
   :y: 3580
-:transport_road_compressor_network_gas:
-  :x: 1960
-  :y: 3640
 :transport_rail_mixer_diesel:
   :x: 1960
   :y: 4220
@@ -1166,15 +1145,9 @@
 :households_useful_demand_for_hot_water_for_houses_with_solar_heater:
   :x: 520
   :y: 1200
-:households_useful_demand_for_space_heating_after_insulation_for_houses_with_add_on:
-  :x: 920
-  :y: 700
-:households_useful_demand_for_hot_water_for_houses_with_add_on:
-  :x: 920
-  :y: 1200
 :households_water_heater_heatpump_air_water_electricity:
   :x: 1520
-  :y: 1620
+  :y: 1560
 :industry_aluminium_production:
   :x: 720
   :y: 9700
@@ -1457,9 +1430,6 @@
 :industry_final_demand_for_other_wood_pellets:
   :x: 2000
   :y: 9040
-:households_useful_demand_for_space_heating_after_insulation_and_solar_heater_and_add_on:
-  :x: 1120
-  :y: 540
 :industry_aluminium_burner_network_gas:
   :x: 1800
   :y: 9680
@@ -1649,9 +1619,6 @@
 :transport_ship_using_diesel_mix:
   :x: 1520
   :y: 4620
-:transport_ship_using_lng:
-  :x: 1520
-  :y: 4680
 :transport_final_demand_for_shipping_lng:
   :x: 2320
   :y: 4840
@@ -1661,9 +1628,6 @@
 :energy_regasification_lng:
   :x: 7320
   :y: 4360
-:transport_truck_using_lng:
-  :x: 1520
-  :y: 4080
 :transport_final_demand_for_road_lng:
   :x: 2320
   :y: 3880
@@ -1703,3 +1667,75 @@
 :energy_regasification_bio_lng:
   :x: 7320
   :y: 4420
+:households_space_heater_hybrid_heatpump_collector_useable_heat:
+  :x: 1520
+  :y: 860
+:households_space_heater_hybrid_heatpump_air_water_electricity:
+  :x: 1520
+  :y: 860
+:households_space_heater_hybrid_heatpump_combined_network_gas:
+  :x: 1920
+  :y: 860
+:households_water_heater_hybrid_heatpump_air_water_electricity:
+  :x: 1520
+  :y: 1680
+:transport_car_using_hydrogen:
+  :x: 1520
+  :y: 3760
+:transport_final_demand_for_road_hydrogen:
+  :x: 2320
+  :y: 4000
+:transport_final_demand_hydrogen:
+  :x: 3120
+  :y: 3800
+:energy_distribution_hydrogen:
+  :x: 5600
+  :y: 5900
+:energy_steam_methane_reformer_hydrogen:
+  :x: 6400
+  :y: 6000
+:energy_compressor_hydrogen:
+  :x: 3280
+  :y: 3680
+:energy_biomass_gasification_ccs_hydrogen:
+  :x: 6400
+  :y: 5800
+:energy_biomass_gasification_hydrogen:
+  :x: 6400
+  :y: 5860
+:energy_local_electrolysis_hydrogen:
+  :x: 4320
+  :y: 3620
+:energy_steam_methane_reformer_ccs_hydrogen:
+  :x: 6400
+  :y: 5940
+:energy_flexibility_curtailment_electricity:
+  :x: 5520
+  :y: 1940
+:transport_car_flexibility_p2p_electricity:
+  :x: 1520
+  :y: 3700
+:energy_locally_available_hydrogen_after_p2g:
+  :x: 3460
+  :y: 3680
+:energy_export_hydrogen:
+  :x: 600
+  :y: 2940
+:energy_locally_available_hydrogen_before_p2g:
+  :x: 4140
+  :y: 3680
+:transport_road_mixer_compressed_network_gas:
+  :x: 1960
+  :y: 3640
+:transport_final_demand_for_road_compressed_network_gas:
+  :x: 2320
+  :y: 3640
+:transport_final_demand_compressed_network_gas:
+  :x: 3120
+  :y: 4220
+:energy_compressor_network_gas:
+  :x: 3420
+  :y: 4220
+:energy_power_hv_network_shortage:
+  :x: 6240
+  :y: 1760

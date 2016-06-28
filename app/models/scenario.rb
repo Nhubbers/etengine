@@ -39,6 +39,7 @@ class Scenario < ActiveRecord::Base
   belongs_to :user
   has_one    :preset_scenario, :foreign_key => 'preset_scenario_id', :class_name => 'Scenario'
   has_one    :scaler, class_name: 'ScenarioScaling', dependent: :delete
+  has_one    :flexibility_order, dependent: :destroy
 
   validates_presence_of :title, :on => :create, :message => "Please provide a title"
   validates             :area_code, :presence => true
@@ -181,6 +182,22 @@ class Scenario < ActiveRecord::Base
       copy_scenario_state(preset)
       self.preset_scenario_id = preset_id
     end
+  end
+
+  # Public: Returns the parent preset or scenario.
+  #
+  # Use this over `parent_scenario` since `parent_scenario` will not check for
+  # the existence of a preset.
+  #
+  # Returns a Scenario, or nil.
+  def parent
+    unless defined?(@parent)
+      @parent = preset_scenario_id &&
+        ( Preset.get(preset_scenario_id).try(:to_scenario) ||
+          Scenario.find(preset_scenario_id) )
+    end
+
+    @parent
   end
 
   # a identifier for the scenario selector drop down in data.
